@@ -6,28 +6,28 @@
 		$('#btn_new').on('click', function(){
 			location.href = "{% url 'client.add' %}";
 		});
+		
+		$('#client-datatable').dataTable();
 	});  
 </script>
 {% endblock %}
 
 {% block content %}
-	<div class="page-header">
-        <h1>Cliente - Listagem</h1>
-    </div>
-    <div class="row col-sm-8 top30">
+<div class="row">
+    <div class="row col-sm-12 top10">
 	    <div class="row col-sm-12">
 		    <div class="buttons btn-group pull-right" style="margin-bottom: 10px; margin-right: 1px;">
 				<button id="btn_new" class="btn btn-primary">Novo Registro</button>
 				<button id="btn_del" class="btn" style="margin-right: 1px;">Excluir</button>
 			</div>
 		</div>
-	    <div class="row col-sm-12 top20">
+	    <div class="row col-sm-12 top30">
 			<table id="client-datatable" class="table table-striped table-bordered table-hover table-condensed">
 			
 				<col width="1%" />			
-				<col width="50%" />
+				<col width="45%" />
 				<col width="20%" />
-				<col width="8%" />
+				<col width="13%" />
 				<col width="20%" />			
 				<col width="1%" />			
 				<thead>
@@ -43,21 +43,21 @@
 				<tbody>
 				{% for client in clients %}
 					<tr>
-						<td><input id="checkAll" type="checkbox" /></td>					
+						<td><input id="checkAll" type="checkbox"  value="{{ client.id}}"/></td>					
 						<td>{{ client.name }}</td>															
 						<td>{{ client.nickname }}</td>
 						<td>{{ client.date_of_birth }}</td>
 						<td>{{ client.cpf }}</td>							
-						<td>&nbsp;</td>					
+						<td><a id="edit" class="btn btn-xs" href="{% url 'client.edit' client.id %}"><i class="glyphicon glyphicon-edit"></i></a></td>					
 					</tr>
 				{% endfor %}
 				</tbody>
-			</table>			
-	
+			</table>
 			<form id="delete_form" method="post" action="" style="visibility: hidden;">
 				{% csrf_token %}			
-				{{form.as_p}}
+				{{form}}
 			</form>
 	    </div>
+    </div>
     </div>
 {% endblock %}

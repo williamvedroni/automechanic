@@ -20,7 +20,7 @@
 		<form method="post" action="{% url 'client.add' %}">
 			{% csrf_token %}
 			<div class="col-sm-9">
-				<div class="form-group{% if form.name.errors %} error{% endif %}" id="{{ form.name.auto_id }}">
+				<div class="form-group{% if form.name.errors %} has-error{% endif %}" id="{{ form.name.auto_id }}">
 					<label class="control-label">{{ form.name.label_tag }}</label>		
 					{{ form.name }}
 					<span class="help-inline">
@@ -33,7 +33,7 @@
 				</div>
 			</div>
 			<div class="col-sm-3">
-				<div class="form-group{% if form.date_of_birth.errors %} error{% endif %}" id="{{ form.date_of_birth.auto_id }}">
+				<div class="form-group{% if form.date_of_birth.errors %} has-error{% endif %}" id="{{ form.date_of_birth.auto_id }}">
 					<label class="control-label">{{ form.date_of_birth.label_tag }}</label>		
 					<div class="input-group date" id="date-birth" data-date="" data-date-format="dd/mm/yyyy">
 	                    {{ form.date_of_birth }}
@@ -50,7 +50,7 @@
 				</div>
 			</div>
 			<div class="col-sm-7">
-				<div class="form-group{% if form.nickname.errors %} error{% endif %}" id="{{ form.nickname.auto_id }}">
+				<div class="form-group{% if form.nickname.errors %} has-error{% endif %}" id="{{ form.nickname.auto_id }}">
 					<label class="control-label">{{ form.nickname.label_tag }}</label>		
 					{{ form.nickname }}
 					<span class="help-inline">
@@ -63,7 +63,7 @@
 				</div>
 			</div>
 			<div class="col-sm-5">
-				<div class="form-group{% if form.cpf.errors %} error{% endif %}" id="{{ form.cpf.auto_id }}">
+				<div class="form-group{% if form.cpf.errors %} has-error{% endif %}" id="{{ form.cpf.auto_id }}">
 					<label class="control-label">{{ form.cpf.label_tag }}</label>		
 					{{ form.cpf }}
 					<span class="help-inline">
@@ -76,7 +76,7 @@
 				</div>
 			</div>
 			<div class="col-sm-12">
-				<div class="form-group{% if form.address.errors %} error{% endif %}" id="{{ form.address.auto_id }}">
+				<div class="form-group{% if form.address.errors %} has-error{% endif %}" id="{{ form.address.auto_id }}">
 					<label class="control-label">{{ form.address.label_tag }}</label>		
 					{{ form.address }}
 					<span class="help-inline">
@@ -88,6 +88,7 @@
 					</span>
 				</div>
 			</div>
+			{{ form.id }}
 			<div class="col-sm-12 top30">
 			    <div class="btn-group pull-left form-group">
 					<button id="btn_new" type="submit" class="btn btn-primary">Gravar</button>

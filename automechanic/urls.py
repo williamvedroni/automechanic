@@ -25,4 +25,5 @@ urlpatterns += patterns('automechanic.authentication.views',
 urlpatterns += patterns('automechanic.client.views',
     url(r'^client/list/', 'list_all', name='client.list'),
     url(r'^client/add/', 'add', name='client.add'),
+    url(r'^client/edit/(?P<client_id>\d+)[/]?$', 'edit', name="client.edit",),
 )
