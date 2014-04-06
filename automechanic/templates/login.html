@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="{% static 'site/img/favicon.png' %}" type="image/ico" />
+
+    <title>Signin AutoMechanic</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'site/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'site/css/signin.css' %}" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <div class="container" class="span6">
+
+      <form class="form-signin" role="form" action="{% url 'client.list' %}">
+        <h2 class="form-signin-heading">Please sign in</h2>
+        <input class="form-control" type="email" placeholder="Email address" autofocus>
+        <input class="form-control" type="password" placeholder="Password">
+        <label class="checkbox">
+          <input type="checkbox" value="remember-me"> Remember me
+        </label>
+        <button class="btn btn-primary pull-right" type="submit">Sign in</button>
+      </form>
+
+    </div> <!-- /container -->
+  </body>
+</html>

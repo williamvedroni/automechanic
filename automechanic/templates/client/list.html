@@ -1,0 +1,63 @@
+{% extends "layout/template.html" %}
+
+{% block head %}
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#btn_new').on('click', function(){
+			location.href = "{% url 'client.add' %}";
+		});
+	});  
+</script>
+{% endblock %}
+
+{% block content %}
+	<div class="page-header">
+        <h1>Cliente - Listagem</h1>
+    </div>
+    <div class="row col-sm-8 top30">
+	    <div class="row col-sm-12">
+		    <div class="buttons btn-group pull-right" style="margin-bottom: 10px; margin-right: 1px;">
+				<button id="btn_new" class="btn btn-primary">Novo Registro</button>
+				<button id="btn_del" class="btn" style="margin-right: 1px;">Excluir</button>
+			</div>
+		</div>
+	    <div class="row col-sm-12 top20">
+			<table id="client-datatable" class="table table-striped table-bordered table-hover table-condensed">
+			
+				<col width="1%" />			
+				<col width="50%" />
+				<col width="20%" />
+				<col width="8%" />
+				<col width="20%" />			
+				<col width="1%" />			
+				<thead>
+					<tr>
+						<th><input id="checkAll" type="checkbox" /></th>					
+						<th>Nome</th>															
+						<th>Apelido</th>
+						<th>Data de Nascimento</th>
+						<th>CPF</th>							
+						<th>&nbsp;</th>					
+					</tr>
+				</thead>
+				<tbody>
+				{% for client in clients %}
+					<tr>
+						<td><input id="checkAll" type="checkbox" /></td>					
+						<td>{{ client.name }}</td>															
+						<td>{{ client.nickname }}</td>
+						<td>{{ client.date_of_birth }}</td>
+						<td>{{ client.cpf }}</td>							
+						<td>&nbsp;</td>					
+					</tr>
+				{% endfor %}
+				</tbody>
+			</table>			
+	
+			<form id="delete_form" method="post" action="" style="visibility: hidden;">
+				{% csrf_token %}			
+				{{form.as_p}}
+			</form>
+	    </div>
+    </div>
+{% endblock %}
