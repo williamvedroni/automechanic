@@ -7,6 +7,15 @@ APP_DIR = os.path.dirname(globals()['__file__'])
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+TIME_ZONE = 'America/Sao_Paulo'
+
+USE_L10N = True
+LANGUAGE_CODE = 'pt-br'
+
+DATE_INPUT_FORMATS = (
+    '%d/%m/%Y',
+)
+
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
@@ -123,6 +132,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'automechanic.client',
+    'automechanic.util'
 )
 
 # A sample logging configuration. The only tangible logging

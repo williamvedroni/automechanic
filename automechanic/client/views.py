@@ -1,51 +1,75 @@
 # -*- coding:utf-8 -*-
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import render_to_response, redirect, render
 from django.template.context import RequestContext
 from automechanic.client.forms import ClientForm, DeleteForm
 from automechanic.client.models import Client
 from django.contrib import messages
-from automechanic.messages import success_messages
+from automechanic.messages import success_messages, error_messages
 from django.views.decorators.http import require_http_methods
-from django.forms.models import model_to_dict
-from datetime import date, datetime
+from automechanic import templates
+from django.core.urlresolvers import reverse
+from django.core.exceptions import ObjectDoesNotExist
 
 
+@require_http_methods(["GET"])
 def list_all(request):
 
+    context = dict()
     clients = Client.objects.all()
-    context = {'clients': clients, 'form': DeleteForm()}
 
-    return render_to_response('client/list.html', context, context_instance=RequestContext(request))
+    context['clients'] = clients
+    context['form'] = DeleteForm()
+
+    return render(request, templates.CLIENT_LIST, context)
 
 
+@require_http_methods(["GET"])
 def add(request):
 
-    form = ClientForm(request.POST or None)
+    context = dict()
+
+    context['form'] = ClientForm()
+    context['action'] = reverse('client.save')
+
+    return render(request, templates.CLIENT_FORM, context)
+
+
+@require_http_methods(["POST"])
+def save(request):
+
+    context = dict()
+
+    form = ClientForm(request.POST)
 
     if form.is_valid():
-        form.save(request)
+
+        form.save()
+        messages.add_message(request, messages.SUCCESS, success_messages.get('success_insert'))
+
         return redirect('client.list')
 
-    context = {'form': form}
+    context['form'] = form
 
-    return render_to_response('client/form.html', context, context_instance=RequestContext(request))
+    return render(request, templates.CLIENT_FORM, context)
 
 
 @require_http_methods(["GET"])
 def edit(request, client_id):
 
     try:
+        context = dict()
+        client = Client.objects.get(pk=client_id)
 
-        client = model_to_dict(Client.objects.get(pk=client_id))
-        client['date_of_birth'] = datetime.strftime(client['date_of_birth'], '%d/%m/%Y')
+        # client['date_of_birth'] = datetime.strftime(client['date_of_birth'], '%d/%m/%Y')
 
-        form = ClientForm(client)
+        context['form'] = ClientForm(instance=client)
+        context['action'] = reverse('client.update', args=[client_id])
 
-        context = {'form': form}
-    except Exception as exception:
-        print str(exception)
+        return render(request, templates.CLIENT_FORM, context)
 
-    return render_to_response('client/form.html', context, context_instance=RequestContext(request))
+    except ObjectDoesNotExist:
+        messages.add_message(request, messages.ERROR, error_messages.get('invalid') % 'Cliente')
+        return redirect('client.list')
 
 
 @require_http_methods(["POST"])
@@ -53,13 +77,22 @@ def update(request, client_id):
 
     try:
 
-        client = model_to_dict(Client.objects.get(pk=client_id))
-        client['date_of_birth'] = datetime.strftime(client['date_of_birth'], '%d/%m/%Y')
+        client = Client.objects.get(pk=client_id)
+        # client['date_of_birth'] = datetime.strftime(client['date_of_birth'], '%d/%m/%Y')
 
-        form = ClientForm(client)
+        form = ClientForm(request.POST, instance=client)
+
+        if form.is_valid():
+
+            form.save(request)
+            messages.add_message(request, messages.SUCCESS, success_messages.get('success_edit'))
+
+            return redirect('client.list')
 
         context = {'form': form}
-    except Exception as exception:
-        print str(exception)
 
-    return render_to_response('client/form.html', context, context_instance=RequestContext(request))
+        return render(request, templates.CLIENT_FORM, context)
+
+    except ObjectDoesNotExist:
+        messages.add_message(request, messages.ERROR, error_messages.get('invalid') % 'Cliente')
+        return redirect('client.list')

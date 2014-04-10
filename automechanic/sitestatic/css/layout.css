@@ -9,21 +9,7 @@ i {
 .nav > li > a {
   color:#787878;
 }
-  
-footer {
-  margin-top:15px;
-  padding-top:10px;
-  padding-bottom:10px;
-  background-color:#efefef;
-}
 
-
-.footer {
-	position:absolute;
-	bottom:0;
-	left:0;
-	width:100%;
-}
 /* count indicator near icons */
 .nav>li .count {
   position: absolute;
@@ -48,13 +34,15 @@ footer {
    padding:8px;
 }
 
-.top5 { margin-top:5px; }
-.top7 { margin-top:7px; }
-.top10 { margin-top:10px; }
-.top15 { margin-top:15px; }
-.top17 { margin-top:17px; }
-.top30 { margin-top:30px; }
+.top1 { margin-top:1%; }
+.top5 { margin-top:5%; }
+.top7 { margin-top:7%; }
+.top10 { margin-top:10%; }
+.top15 { margin-top:15%; }
+.top17 { margin-top:17%; }
+.top30 { margin-top:30%; }
 
-.error {
-  color: #b94a48;
+.pointer{
+	
+	cursor: pointer;
 }

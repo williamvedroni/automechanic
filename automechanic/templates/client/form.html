@@ -1,5 +1,7 @@
 {% extends "layout/template.html" %}
 
+{% load utilities %}
+
 {% block head %}
 	<script>
 		$(document).ready(function(){
@@ -13,16 +15,17 @@
 {% endblock %}
 
 {% block content %}
-	<div class="page-header">
-    	<h1>Cliente - Cadastro</h1>
-    </div>
-    <div class="row col-sm-8">
-		<form method="post" action="{% url 'client.add' %}">
+	
+    <div class="row-fluid">
+		<div class="page-header">
+			<h3>Cliente - Cadastro</h3>
+		</div>
+		<form method="post" action="{{ action }}">
 			{% csrf_token %}
-			<div class="col-sm-9">
-				<div class="form-group{% if form.name.errors %} has-error error{% endif %}" id="{{ form.name.auto_id }}">
+			<div class="span9">
+				<div class="control-group{% if form.name.errors %} error{% endif %}" id="{{ form.name.auto_id }}">
 					<label class="control-label">{{ form.name.label_tag }}</label>		
-					{{ form.name }}
+					{{ form.name}}
 					<span class="help-inline">
 					{% if form.name.errors %} 
 						{% for error in form.name.errors %}
@@ -32,13 +35,12 @@
 					</span>
 				</div>
 			</div>
-			<div class="col-sm-3">
-				<div class="form-group{% if form.date_of_birth.errors %} has-error error{% endif %}" id="{{ form.date_of_birth.auto_id }}">
+			<div class="span9">
+				<div class="control-group{% if form.date_of_birth.errors %} error{% endif %}" id="{{ form.date_of_birth.auto_id }}">
 					<label class="control-label">{{ form.date_of_birth.label_tag }}</label>		
-					<div class="input-group date" id="date-birth" data-date="" data-date-format="dd/mm/yyyy">
+					<div class="input-append date" id="date-birth" data-date="" data-date-format="dd/mm/yyyy">
 	                    {{ form.date_of_birth }}
-	                    <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span>
-	                    </span>
+	                    <span class="add-on"><i class="icon-calendar pointer"></i></span>
 	                </div>
 					<span class="help-inline">
 					{% if form.date_of_birth.errors %} 
@@ -49,8 +51,8 @@
 					</span>
 				</div>
 			</div>
-			<div class="col-sm-7">
-				<div class="form-group{% if form.nickname.errors %} has-error error{% endif %}" id="{{ form.nickname.auto_id }}">
+			<div class="span7">
+				<div class="control-group{% if form.nickname.errors %} error{% endif %}" id="{{ form.nickname.auto_id }}">
 					<label class="control-label">{{ form.nickname.label_tag }}</label>		
 					{{ form.nickname }}
 					<span class="help-inline">
@@ -62,8 +64,8 @@
 					</span>
 				</div>
 			</div>
-			<div class="col-sm-5">
-				<div class="form-group{% if form.cpf.errors %} has-error error{% endif %}" id="{{ form.cpf.auto_id }}">
+			<div class="span5">
+				<div class="control-group{% if form.cpf.errors %} error{% endif %}" id="{{ form.cpf.auto_id }}">
 					<label class="control-label">{{ form.cpf.label_tag }}</label>		
 					{{ form.cpf }}
 					<span class="help-inline">
@@ -75,8 +77,8 @@
 					</span>
 				</div>
 			</div>
-			<div class="col-sm-12">
-				<div class="form-group{% if form.address.errors %} has-error error{% endif %}" id="{{ form.address.auto_id }}">
+			<div class="span9">
+				<div class="control-group{% if form.address.errors %} error{% endif %}" id="{{ form.address.auto_id }}">
 					<label class="control-label">{{ form.address.label_tag }}</label>		
 					{{ form.address }}
 					<span class="help-inline">
@@ -89,7 +91,7 @@
 				</div>
 			</div>
 			{{ form.id }}
-			<div class="col-sm-12 top30">
+			<div class="span12 top1">
 			    <div class="btn-group pull-left form-group">
 					<button id="btn_new" type="submit" class="btn btn-primary">Gravar</button>
 					<button id="btn_cancel" type="button" class="btn">Cancelar</button>

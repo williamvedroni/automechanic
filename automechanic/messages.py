@@ -55,3 +55,7 @@ success_messages = {
     'success_edit':         u'Edição realizada com sucesso.',
     'success_remove_single': u'Remoção realizada com sucesso.',
 }
+
+cpf_messages = {
+                'invalid': u'CPF inválido.'
+}

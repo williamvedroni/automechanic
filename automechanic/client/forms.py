@@ -6,37 +6,103 @@ Created on 05/04/2014
 '''
 from django import forms
 from automechanic.messages import error_messages, date_error_messages, \
-    success_messages
+    cpf_messages
 from automechanic.client.models import Client
-from django.contrib import messages
+from django.conf import settings
+import re
+from django.core.exceptions import ValidationError
 
 
-class ClientForm(forms.Form):
+class ClientForm(forms.ModelForm):
 
-    id = forms.CharField(widget=forms.HiddenInput(), label='', required=False)
-    name = forms.CharField(label=u"Nome:", error_messages=error_messages, max_length=200, widget=forms.TextInput(attrs={'class': "form-control"}))
-    date_of_birth = forms.DateField(label=u"Data de Nascimento:", error_messages=date_error_messages, widget=forms.TextInput(attrs={'class': "form-control"}))
-    nickname = forms.CharField(label=u"Apelido:", error_messages=error_messages, max_length=50, widget=forms.TextInput(attrs={'class': "form-control"}))
-    cpf = forms.CharField(label=u"CPF:", error_messages=error_messages, max_length=14, widget=forms.TextInput(attrs={'class': "form-control"}))
-    address = forms.CharField(label=u"Endereço:", error_messages=error_messages, max_length=200, widget=forms.TextInput(attrs={'class': "form-control"}))
+    name = forms.CharField(
 
-    def save(self, request):
-        data = self.cleaned_data
-        client = Client()
+        label=u"Nome:",
+        error_messages=error_messages,
+        max_length=200,
+        widget=forms.TextInput(attrs={'class': "input-xxlarge"})
+    )
 
-        if data.get('id') is not None:
-            client.id = data.get('id', '')
-            messages.add_message(request, messages.SUCCESS, success_messages.get("success_edit"))
-        else:
-            messages.add_message(request, messages.SUCCESS, success_messages.get("success_insert"))
+    date_of_birth = forms.DateField(
 
-        client.name = data.get('name', '')
-        client.date_of_birth = data.get('date_of_birth', '')
-        client.nickname = data.get('nickname', '')
-        client.cpf = data.get('cpf', '')
-        client.address = data.get('address', '')
-        client.save()
+        label=u"Data de Nascimento:",
+        error_messages=date_error_messages,
+        widget=forms.DateInput(format='%d/%m/%Y'),
+        input_formats=('%d/%m/%Y',),
+    )
+
+    nickname = forms.CharField(
+
+        label=u"Apelido:",
+        error_messages=error_messages,
+        max_length=50,
+        widget=forms.TextInput(attrs={'class': "input-xlarge"})
+    )
+
+    cpf = forms.CharField(
+
+        label=u"CPF:",
+        error_messages=error_messages,
+        max_length=14,
+    )
+    address = forms.CharField(
+
+        label=u"Endereço:",
+        error_messages=error_messages,
+        max_length=200,
+        widget=forms.TextInput(attrs={'class': "input-xxlarge"})
+    )
+
+    def clean_cpf(self):
+
+        try:
+
+            digits_cpf = [10, 9, 8, 7, 6, 5, 4, 3, 2]
+
+            cpf = re.sub('[.-]', '', self.cleaned_data.get('cpf'))
+
+            total = 0
+            for i in range(9):
+                total += (int(cpf[i]) * digits_cpf[i])
+
+            mod = (total % 11)
+            first_digit = 0
+            if mod >= 2:
+                first_digit = (11 - mod)
+
+            digits_cpf.insert(0, 11)
+
+            total = 0
+            for i in range(10):
+                total += (int(cpf[i]) * digits_cpf[i])
+
+            mod = (total % 11)
+            second_digit = 0
+            if mod >= 2:
+                second_digit = (11 - mod)
+
+            if int(cpf[9]) != first_digit:
+                raise ValidationError(cpf_messages.get('invalid'))
+
+            if int(cpf[10]) != second_digit:
+                raise ValidationError(cpf_messages.get('invalid'))
+
+            if len(set(cpf)) == 1:
+                raise ValidationError(cpf_messages.get('invalid'))
+
+            return self.cleaned_data['cpf']
+
+        except:
+            raise ValidationError(cpf_messages.get('invalid'))
+
+    class Meta:
+        model = Client
 
 
 class DeleteForm(forms.Form):
-    ids = forms.CharField(widget=forms.HiddenInput(), label='')
+
+    ids = forms.CharField(
+
+        label='',
+        widget=forms.HiddenInput(),
+    )
