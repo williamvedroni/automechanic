@@ -7,13 +7,12 @@ Created on 05/04/2014
 from django import forms
 from automechanic.messages import error_messages, date_error_messages, \
     cpf_messages
-from automechanic.client.models import Client
-import re
+from automechanic.employee.models import Employee
 from django.core.exceptions import ValidationError
 from automechanic.validators import validator_cpf
 
 
-class ClientForm(forms.ModelForm):
+class EmployeeForm(forms.ModelForm):
 
     name = forms.CharField(
 
@@ -31,14 +30,6 @@ class ClientForm(forms.ModelForm):
         input_formats=('%d/%m/%Y',),
     )
 
-    nickname = forms.CharField(
-
-        label=u"Apelido:",
-        error_messages=error_messages,
-        max_length=50,
-        widget=forms.TextInput(attrs={'class': "input-xlarge"})
-    )
-
     cpf = forms.CharField(
 
         label=u"CPF:",
@@ -53,6 +44,13 @@ class ClientForm(forms.ModelForm):
         widget=forms.TextInput(attrs={'class': "input-xxlarge"})
     )
 
+    phone_number = forms.CharField(
+
+        label=u"Telefone:",
+        error_messages=error_messages,
+        max_length=13,
+    )
+
     def clean_cpf(self):
 
         try:
@@ -64,13 +62,4 @@ class ClientForm(forms.ModelForm):
             raise ValidationError(cpf_messages.get('invalid'))
 
     class Meta:
-        model = Client
-
-
-class DeleteForm(forms.Form):
-
-    ids = forms.CharField(
-
-        label='',
-        widget=forms.HiddenInput(),
-    )
+        model = Employee

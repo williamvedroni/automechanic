@@ -10,7 +10,6 @@ from automechanic.messages import error_messages, date_error_messages, \
 from automechanic.client.models import Client
 import re
 from django.core.exceptions import ValidationError
-from automechanic.validators import validator_cpf
 
 
 class ClientForm(forms.ModelForm):
@@ -56,11 +55,43 @@ class ClientForm(forms.ModelForm):
     def clean_cpf(self):
 
         try:
-            validator_cpf(self.cleaned_data.get('cpf'))
 
-            return self.cleaned_data.get('cpf')
+            digits_cpf = [10, 9, 8, 7, 6, 5, 4, 3, 2]
 
-        except ValidationError:
+            cpf = re.sub('[.-]', '', self.cleaned_data.get('cpf'))
+
+            total = 0
+            for i in range(9):
+                total += (int(cpf[i]) * digits_cpf[i])
+
+            mod = (total % 11)
+            first_digit = 0
+            if mod >= 2:
+                first_digit = (11 - mod)
+
+            digits_cpf.insert(0, 11)
+
+            total = 0
+            for i in range(10):
+                total += (int(cpf[i]) * digits_cpf[i])
+
+            mod = (total % 11)
+            second_digit = 0
+            if mod >= 2:
+                second_digit = (11 - mod)
+
+            if int(cpf[9]) != first_digit:
+                raise ValidationError(cpf_messages.get('invalid'))
+
+            if int(cpf[10]) != second_digit:
+                raise ValidationError(cpf_messages.get('invalid'))
+
+            if len(set(cpf)) == 1:
+                raise ValidationError(cpf_messages.get('invalid'))
+
+            return self.cleaned_data['cpf']
+
+        except:
             raise ValidationError(cpf_messages.get('invalid'))
 
     class Meta:
