@@ -6,12 +6,12 @@
 	<script>
 		$(document).ready(function(){
 			$(".nav > li").removeClass("active");
-			$("#session-client").addClass("active");
+			$("#session-employee").addClass("active");
 			$('#date-birth').datepicker();
 			$("[name*=cpf]").mask("999.999.999-99");
 			$("[name*=date_of_birth]").mask("99/99/9999");
 			$('#btn_cancel').on('click',function(){
-				location.href = "{% url 'client.list' %}";
+				location.href = "{% url 'employee.list' %}";
 			});
 		});
 	</script>
@@ -21,7 +21,7 @@
 	
     <div class="row-fluid">
 		<div class="page-header">
-			<h3>Cliente - Cadastro</h3>
+			<h3>Funcionário - Cadastro</h3>
 		</div>
 		<form method="post" action="{{ action }}">
 			{% csrf_token %}
@@ -54,19 +54,6 @@
 					</span>
 				</div>
 			</div>
-			<div class="span7">
-				<div class="control-group{% if form.nickname.errors %} error{% endif %}" id="{{ form.nickname.auto_id }}">
-					<label class="control-label">{{ form.nickname.label_tag }}</label>		
-					{{ form.nickname }}
-					<span class="help-inline">
-					{% if form.nickname.errors %} 
-						{% for error in form.nickname.errors %}
-							{{ error|escape }}</br>
-						{% endfor %}
-					{% endif %}
-					</span>
-				</div>
-			</div>
 			<div class="span5">
 				<div class="control-group{% if form.cpf.errors %} error{% endif %}" id="{{ form.cpf.auto_id }}">
 					<label class="control-label">{{ form.cpf.label_tag }}</label>		
@@ -93,7 +80,19 @@
 					</span>
 				</div>
 			</div>
-			{{ form.id }}
+			<div class="span9">
+				<div class="control-group{% if form.phone_number.errors %} error{% endif %}" id="{{ form.phone_number.auto_id }}">
+					<label class="control-label">{{ form.phone_number.label_tag }}</label>		
+					{{ form.phone_number }}
+					<span class="help-inline">
+					{% if form.phone_number.errors %} 
+						{% for error in form.phone_number.errors %}
+							{{ error|escape }}</br>
+						{% endfor %}
+					{% endif %}
+					</span>
+				</div>
+			</div>			
 			<div class="span9 top1">
 			    <div class="btn-group pull-left form-group">
 					<button id="btn_new" type="submit" class="btn btn-primary">Gravar</button>

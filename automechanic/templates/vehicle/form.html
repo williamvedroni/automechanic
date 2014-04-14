@@ -1,0 +1,108 @@
+{% extends "layout/template.html" %}
+
+{% load utilities %}
+
+{% block head %}
+	<script>
+		$(document).ready(function(){
+			$(".nav > li").removeClass("active");
+			$("#session-client").addClass("active");
+			$("[name*=fabrication_year]").mask("9999");
+			$("[name*=license_plate]").mask("AAA-9999");
+			
+			$('#btn_cancel').on('click',function(){
+				location.href = "{% url 'vehicle.list' client_id %}";
+			});
+			
+			$('#btn_save').on('click',function(){
+
+			});
+		});
+	</script>
+{% endblock %}
+
+{% block content %}
+	
+    <div class="row-fluid">
+		<div class="page-header">
+			<h3>Veículo - Cadastro</h3>
+		</div>
+		<form method="post" action="{{ action }}">
+			{% csrf_token %}
+			<div class="span9">
+				<div class="control-group{% if form.vehicle_model.errors %} error{% endif %}" id="{{ form.vehicle_model.auto_id }}">
+					<label class="control-label">{{ form.vehicle_model.label_tag }}</label>		
+	                {{ form.vehicle_model }}
+					<span class="help-inline">
+					{% if form.vehicle_model.errors %} 
+						{% for error in form.vehicle_model.errors %}
+							{{ error|escape }}</br>
+						{% endfor %}
+					{% endif %}
+					</span>
+				</div>
+			</div>
+			<div class="span7">
+				<div class="control-group{% if form.fabricator.errors %} error{% endif %}" id="{{ form.fabricator.auto_id }}">
+					<label class="control-label">{{ form.fabricator.label_tag }}</label>		
+					{{ form.fabricator }}
+					<span class="help-inline">
+					{% if form.fabricator.errors %} 
+						{% for error in form.fabricator.errors %}
+							{{ error|escape }}</br>
+						{% endfor %}
+					{% endif %}
+					</span>
+				</div>
+			</div>
+			<div class="span9">
+				<div class="control-group{% if form.license_plate.errors %} error{% endif %}" id="{{ form.license_plate.auto_id }}">
+					<label class="control-label">{{ form.license_plate.label_tag }}</label>		
+					{{ form.license_plate}}
+					<span class="help-inline">
+					{% if form.license_plate.errors %} 
+						{% for error in form.license_plate.errors %}
+							{{ error|escape }}</br>
+						{% endfor %}
+					{% endif %}
+					</span>
+				</div>
+			</div>
+			<div class="span5">
+				<div class="control-group{% if form.color.errors %} error{% endif %}" id="{{ form.color.auto_id }}">
+					<label class="control-label">{{ form.color.label_tag }}</label>
+					{{ form.color }}
+					<span class="help-inline">
+					{% if form.color.errors %} 
+						{% for error in form.color.errors %}
+							{{ error|escape }}</br>
+						{% endfor %}
+					{% endif %}
+					</span>
+				</div>
+			</div>
+			<div class="span9">
+				<div class="control-group{% if form.fabrication_year.errors %} error{% endif %}" id="{{ form.fabrication_year.auto_id }}">
+					<label class="control-label">{{ form.fabrication_year.label_tag }}</label>		
+					{{ form.fabrication_year }}
+					<span class="help-inline">
+					{% if form.fabrication_year.errors %}
+						{% for error in form.fabrication_year.errors %}
+							{{ error|escape }}</br>
+						{% endfor %}
+					{% endif %}
+					</span>
+				</div>
+			</div>
+			
+			{{ form.client }}
+			
+			<div class="span9 top1">
+			    <div class="btn-group pull-left form-group">
+					<button id="btn_save" type="submit" class="btn btn-primary">Gravar</button>
+					<button id="btn_cancel" type="button" class="btn">Cancelar</button>
+				</div>
+			</div>
+		</form>
+    </div>
+{% endblock %}

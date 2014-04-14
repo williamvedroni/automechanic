@@ -12,6 +12,10 @@ TIME_ZONE = 'America/Sao_Paulo'
 USE_L10N = True
 LANGUAGE_CODE = 'pt-br'
 
+DECIMAL_SEPARATOR = ','
+THOUSAND_SEPARATOR = '.'
+USE_THOUSAND_SEPARATOR = True
+
 DATE_INPUT_FORMATS = (
     '%d/%m/%Y',
 )
@@ -132,7 +136,10 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'automechanic.client',
-    'automechanic.util'
+    'automechanic.vehicle',
+    'automechanic.part',
+    'automechanic.employee',
+    'automechanic.util',
 )
 
 # A sample logging configuration. The only tangible logging
