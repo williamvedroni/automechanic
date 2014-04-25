@@ -72,3 +72,7 @@ urlpatterns += patterns('automechanic.employee.views',
     url(r'^employee/update/(?P<employee_id>\d+)/', 'update', name="employee.update",),
     url(r'^employee/delete/', 'delete', name='employee.delete'),
 )
+
+urlpatterns += patterns('automechanic.service_order.views',
+    url(r'^service.order/new/', 'new', name='service.order.new'),
+)

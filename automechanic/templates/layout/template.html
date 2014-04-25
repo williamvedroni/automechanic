@@ -101,7 +101,7 @@
               <li id="session-employee"><a class="top17" href="{% url 'employee.list' %}"><i class="fa fa-user fa-3x"></i><br><span>Funcionários</span></a></li>             
               <li id="session-client"><a class="top17" href="{% url 'client.list' %}"><i class="fa fa-users fa-3x"></i><br><span>Clientes</span></a></li>
               <li id="session-part"><a class="top17" href="{% url 'part.list' %}"><i class="fa fa-wrench fa-3x"></i><br><span>Peças</span></a></li>
-              <li id="session-service-order"><a class="top17" href=""><i class="fa fa-barcode fa-3x"></i><br><span>Ord. de Serviço</span></a></li>
+              <li id="session-service-order"><a class="top17" href="{% url 'service.order.new' %}"><i class="fa fa-barcode fa-3x"></i><br><span>Ord. de Serviço</span></a></li>
             </ul>
           </div><!--/.well -->
         </div><!--/span-->

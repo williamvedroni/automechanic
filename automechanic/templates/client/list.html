@@ -73,7 +73,7 @@
 						<td><input id="id" type="checkbox"  value="{{ client.id}}"/></td>					
 						<td>{{ client.name }}</td>															
 						<td>{{ client.nickname }}</td>
-						<td>{{ client.date_of_birth|date:"d/m/y" }}</td>
+						<td>{{ client.date_of_birth|date:"d/m/Y" }}</td>
 						<td>{{ client.cpf }}</td>							
 						<td>
 							<a id="edit" title="Editar" href="{% url 'client.edit' client.id %}"><i class="icon-edit"></i></a>

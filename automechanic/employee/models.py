@@ -13,3 +13,6 @@ class Employee(models.Model):
 
     class Meta:
         db_table = 'employee'
+
+    def __unicode__(self):
+        return self.name

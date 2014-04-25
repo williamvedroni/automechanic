@@ -30,3 +30,9 @@ Employee
 '''
 EMPLOYEE_LIST = 'employee/list.html'
 EMPLOYEE_FORM = 'employee/form.html'
+
+
+'''
+Order Service
+'''
+ORDER_SERVICE_FORM = 'service_order/form-wizard.html'

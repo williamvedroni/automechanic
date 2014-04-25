@@ -1,0 +1,118 @@
+{% extends "layout/template.html" %}
+
+{% load utilities %}
+
+{% load staticfiles %}
+
+{% block head %}
+	<script>
+		$(document).ready(function(){
+		});
+	</script>
+    <!-- bootstrap -->
+    <link href="{% static 'site/bootstrap_/css/bootstrap.css" rel="stylesheet" />
+
+    <!-- libraries -->
+    <link href="{% static 'site/datepicker/css/datepicker.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'site/font-awesome/css/font-awesome.css' %}">
+    
+    <!-- this page specific styles -->
+    <link rel="stylesheet" href="{% static 'site/css/compiled/form-wizard.css' %}" type="text/css" media="screen" />
+
+    <!-- open sans font -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css' />
+{% endblock %}
+
+{% block navigate %}
+	<li><a href="#">Ordem de serviço</a> <span class="divider">/</span></li>
+	<li class="active">Cadastro</li>
+{% endblock %}
+
+{% block content %}
+	<div id="pad-wrapper" class="row-fluid">	        
+	            <div id="fuelux-wizard" class="wizard row">
+	                <ul class="wizard-steps">
+	                    <li data-target="#step1" class="active">
+	                        <span class="step">1</span>
+	                        <span class="title">Selecione <br> Funcionários</span>
+	                    </li>
+	                    <li data-target="#step2">
+	                        <span class="step">2</span>
+	                        <span class="title">Selecione <br> Cliente</span>
+	                    </li>
+	                    <li data-target="#step3">
+	                        <span class="step">3</span>
+	                        <span class="title">Selecione <br> Veículo</span>
+	                    </li>
+	                    <li data-target="#step4">
+	                        <span class="step">4</span>
+	                        <span class="title">Pagamento <br> informação</span>
+	                    </li>
+	                </ul>                            
+	            </div>
+	            <div class="step-content">
+	                <div class="step-pane active" id="step1">
+	                    {{ form.employees }}
+	                </div>
+	                <div class="step-pane" id="step2">
+	                    {{ form.client }}
+	                </div>
+	                
+	                <div class="step-pane" id="step3">
+	                  
+	                </div>
+	                <div class="step-pane" id="step4">
+	                  
+	                </div>	           
+	                <div class="wizard-actions">
+	                    <button type="button" disabled class="btn-glow primary btn-prev btn"> 
+	                        <i class="icon-chevron-left"></i> Prev
+	                    </button>
+	                    <button type="button" class="btn-glow btn-primary btn-next btn" data-last="Finish">
+	                        Next <i class="icon-chevron-right"></i>
+	                    </button>
+	                    <button type="button" class="btn-glow success btn-finish btn">
+	                        Setup your account!
+	                    </button>
+	                </div>
+	            </div>
+	        </div>
+    <!-- end main container -->
+
+	<!-- scripts for this page -->
+    <script src="{% static 'site/js/fuelux.wizard.js' %}"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            var $wizard = $('#fuelux-wizard'),
+                $btnPrev = $('.wizard-actions .btn-prev'),
+                $btnNext = $('.wizard-actions .btn-next'),
+                $btnFinish = $(".wizard-actions .btn-finish");
+
+            $wizard.wizard().on('finished', function(e) {
+                // wizard complete code
+            }).on("changed", function(e) {
+                var step = $wizard.wizard("selectedItem");
+                // reset states
+                $btnNext.removeAttr("disabled");
+                $btnPrev.removeAttr("disabled");
+                $btnNext.show();
+                $btnFinish.hide();
+
+                if (step.step === 1) {
+                    $btnPrev.attr("disabled", "disabled");
+                } else if (step.step === 4) {
+                    $btnNext.hide();
+                    $btnFinish.show();
+                }
+            });
+
+            $btnPrev.on('click', function() {
+                $wizard.wizard('previous');
+            });
+            $btnNext.on('click', function() {
+                $wizard.wizard('next');
+            });
+        });
+    </script>
+{% endblock %}

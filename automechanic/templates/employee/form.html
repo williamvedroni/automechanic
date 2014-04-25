@@ -17,12 +17,14 @@
 	</script>
 {% endblock %}
 
+{% block navigate %}
+	<li><a href="#">Funcionário</a> <span class="divider">/</span></li>
+	<li class="active">Cadastro</li>
+{% endblock %}
+
 {% block content %}
 	
     <div class="row-fluid">
-		<div class="page-header">
-			<h3>Funcionário - Cadastro</h3>
-		</div>
 		<form method="post" action="{{ action }}">
 			{% csrf_token %}
 			<div class="span9">

@@ -75,7 +75,7 @@
 						<td><input id="id" type="checkbox"  value="{{ employee.id}}"/></td>					
 						<td>{{ employee.name }}</td>															
 						<td>{{ employee.phone_number }}</td>
-						<td>{{ employee.date_of_birth|date:"d/m/y" }}</td>
+						<td>{{ employee.date_of_birth|date:"d/m/Y" }}</td>
 						<td>{{ employee.cpf }}</td>							
 						<td>
 							<a id="edit" title="Editar" href="{% url 'employee.edit' employee.id %}"><i class="icon-edit"></i></a>

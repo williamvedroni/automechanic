@@ -13,3 +13,6 @@ class Client(models.Model):
 
     class Meta:
         db_table = 'client'
+
+    def __unicode__(self):
+        return self.name
