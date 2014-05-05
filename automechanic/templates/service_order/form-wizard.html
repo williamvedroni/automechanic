@@ -1,118 +1,217 @@
-{% extends "layout/template.html" %}
-
-{% load utilities %}
-
-{% load staticfiles %}
-
+{% extends "layout/template.html" %} 
+{% load utilities %} 
+{% load staticfiles %} 
 {% block head %}
-	<script>
-		$(document).ready(function(){
+<script>
+	$(document).ready(function() {
+
+	$("select#id_clients").on("change", function() {
+
+		$("select#id_vehicles").empty();
+		var client_id = $(this).val();
+		$.ajax({
+			data : {
+				client_id : client_id
+			},
+			url : "{% url 'load.vehicle' %}",
+			dataType : 'text',
+			success : function(data) {
+				$("select#id_vehicles").html(data);
+			},
 		});
-	</script>
-    <!-- bootstrap -->
-    <link href="{% static 'site/bootstrap_/css/bootstrap.css" rel="stylesheet" />
+	});
 
-    <!-- libraries -->
-    <link href="{% static 'site/datepicker/css/datepicker.css' %}" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'site/font-awesome/css/font-awesome.css' %}">
-    
-    <!-- this page specific styles -->
-    <link rel="stylesheet" href="{% static 'site/css/compiled/form-wizard.css' %}" type="text/css" media="screen" />
+	$("#btn_select_part").click(function() {
 
-    <!-- open sans font -->
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css' />
-{% endblock %}
+			var part_selected = $('select#id_parts option:selected').sort().clone();
+			var selected = $('select#parts-selecteds option').sort().clone();
+			var selecteds = []
 
+			part_selected.each(function(index) {
+				aux = $(this).val();
+				aux_obj = $(this);
+				is_duplicated = false;
+				selected.each(function() {
+					if (aux == $(this).val()) {
+						is_duplicated = true;
+					}
+			});
+
+			selecteds = selecteds.concat(aux_obj);
+
+			});
+
+			$('select#parts-selecteds').append(selecteds);
+
+		});
+
+	$("#btn_remove_part")
+		.click(
+			function() {	
+				var selecteds = $('select#contacts-selecteds option:selected').size();
+		
+				if (selecteds > 0) {
+					$('select#contacts-selecteds option:selected').remove();
+				}
+	});
+	
+	
+	$('#form_service_order').on("submit",function(){
+		
+		$('select#parts-selecteds option').attr("selected", true);		
+		
+	});
+
+});
+</script>
+<!-- bootstrap -->
+<link href="{% static 'site/bootstrap_/css/bootstrap.css" rel="stylesheet" />
+
+<!-- libraries -->
+<link href="{% static 'site/datepicker/css/datepicker.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'site/font-awesome/css/font-awesome.css' %}">
+
+<!-- this page specific styles -->
+<link rel="stylesheet" href="{% static 'site/css/compiled/form-wizard.css' %}" type="text/css"media="screen" />
+
+<!-- open sans font -->
+<link
+	href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'rel='stylesheet' type='text/css' />
+{% endblock %} 
 {% block navigate %}
 	<li><a href="#">Ordem de serviço</a> <span class="divider">/</span></li>
 	<li class="active">Cadastro</li>
-{% endblock %}
-
+{% endblock %} 
 {% block content %}
-	<div id="pad-wrapper" class="row-fluid">	        
-	            <div id="fuelux-wizard" class="wizard row">
-	                <ul class="wizard-steps">
-	                    <li data-target="#step1" class="active">
-	                        <span class="step">1</span>
-	                        <span class="title">Selecione <br> Funcionários</span>
-	                    </li>
-	                    <li data-target="#step2">
-	                        <span class="step">2</span>
-	                        <span class="title">Selecione <br> Cliente</span>
-	                    </li>
-	                    <li data-target="#step3">
-	                        <span class="step">3</span>
-	                        <span class="title">Selecione <br> Veículo</span>
-	                    </li>
-	                    <li data-target="#step4">
-	                        <span class="step">4</span>
-	                        <span class="title">Pagamento <br> informação</span>
-	                    </li>
-	                </ul>                            
-	            </div>
-	            <div class="step-content">
-	                <div class="step-pane active" id="step1">
-	                    {{ form.employees }}
-	                </div>
-	                <div class="step-pane" id="step2">
-	                    {{ form.client }}
-	                </div>
-	                
-	                <div class="step-pane" id="step3">
-	                  
-	                </div>
-	                <div class="step-pane" id="step4">
-	                  
-	                </div>	           
-	                <div class="wizard-actions">
-	                    <button type="button" disabled class="btn-glow primary btn-prev btn"> 
-	                        <i class="icon-chevron-left"></i> Prev
-	                    </button>
-	                    <button type="button" class="btn-glow btn-primary btn-next btn" data-last="Finish">
-	                        Next <i class="icon-chevron-right"></i>
-	                    </button>
-	                    <button type="button" class="btn-glow success btn-finish btn">
-	                        Setup your account!
-	                    </button>
-	                </div>
-	            </div>
-	        </div>
-    <!-- end main container -->
+<form id="form_service_order" action="{{ action }}" method="post">
+	{% csrf_token %}
+	<div id="pad-wrapper" class="row-fluid">
+		<div id="fuelux-wizard" class="wizard row">
+			<ul class="wizard-steps">
+				<li data-target="#step1" class="active"><span class="step">1</span>
+					<span class="title">Selecione <br> Funcionários
+				</span></li>
+				<li data-target="#step2"><span class="step">2</span> <span
+					class="title">Selecione <br> Cliente/Veículo
+				</span></li>
+				<li data-target="#step3"><span class="step">3</span> <span
+					class="title">Selecione <br> Peças
+				</span></li>
+				<li data-target="#step4"><span class="step">4</span> <span
+					class="title">Pagamento <br> informação
+				</span></li>
+			</ul>
+		</div>
+		<div class="step-content">
+			<div class="step-pane active" id="step1">{{ form.employees }}</div>
+			<div class="step-pane" id="step2">
+				<div class="span5">
+					{{ form.clients }}
+				</div>
+	
+				<div class="span5">
+					<select id="id_vehicles" name="vehicles">
+					</select>
+				</div>
+			</div>
+	
+			<div class="step-pane" id="step3">
+				<div class="span3 top3">
+					<div class="control-group">
+						<label for="contacts-selecteds">Peças disponíveis:</label> 
+						{{form.parts }}
+					</div>
+				</div>
+	
+				<div class="span1 row">
+					<div>
+						<button class="btn" type="button" id="btn_select_part" style="margin-top: 55px;" title="Adicionar">
+							<i class="icon-chevron-right"></i>
+						</button>
+					</div>
+					<div>
+						<button class="btn" type="button" id="btn_remove_part" style="margin-top: 5px;" title="Remover">
+							<i class="icon-trash"></i>
+						</button>
+					</div>
+				</div>
+				<div class="span3 top3">
+					<div class="control-group">
+						<label for="contacts-selecteds">Peças selecionadas:</label> 
+						<select id="parts-selecteds" name="parts-selecteds" multiple="multiple">
+	
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="step-pane" id="step4">
+				<div class="span9">
+					<div
+						class="control-group{% if form.service_rating.errors %} error{% endif %}"id="{{ form.service_rating.auto_id }}">
+						<label class="control-label">
+							{{form.service_rating.label_tag }}</label>
+	
+						<div class="input-prepend">
+							<span class="add-on">R$</span> {{ form.service_rating }} 
+								<span class="help-inline"> 
+								{% if form.service_rating.errors %}
+									{% for error in form.service_rating.errors %} 
+										{{ error|escape }}</br>
+									{% endfor %} 
+								{% endif %}
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="wizard-actions">
+				<button type="button" disabled class="btn-glow primary btn-prev btn">
+					<i class="icon-chevron-left"></i> Anterior
+				</button>
+				<button type="button" class="btn-glow btn-primary btn-next btn"
+					data-last="Finish">
+					Próximo <i class="icon-chevron-right"></i>
+				</button>
+				<button type="submit"
+					class="btn-glow success btn-finish btn btn-success">
+					Finalizar Ord. de Serviço!</button>
+			</div>
+		</div>
+	</div>
+</form>
+<!-- end main container -->
 
-	<!-- scripts for this page -->
-    <script src="{% static 'site/js/fuelux.wizard.js' %}"></script>
+<!-- scripts for this page -->
+<script src="{% static 'site/js/fuelux.wizard.js' %}"></script>
 
-    <script type="text/javascript">
-        $(function () {
-            var $wizard = $('#fuelux-wizard'),
-                $btnPrev = $('.wizard-actions .btn-prev'),
-                $btnNext = $('.wizard-actions .btn-next'),
-                $btnFinish = $(".wizard-actions .btn-finish");
+<script type="text/javascript">
+	$(function() {
+		var $wizard = $('#fuelux-wizard'), $btnPrev = $('.wizard-actions .btn-prev'), $btnNext = $('.wizard-actions .btn-next'), $btnFinish = $(".wizard-actions .btn-finish");
 
-            $wizard.wizard().on('finished', function(e) {
-                // wizard complete code
-            }).on("changed", function(e) {
-                var step = $wizard.wizard("selectedItem");
-                // reset states
-                $btnNext.removeAttr("disabled");
-                $btnPrev.removeAttr("disabled");
-                $btnNext.show();
-                $btnFinish.hide();
+		$wizard.wizard().on('finished', function(e) {
+			// wizard complete code
+		}).on("changed", function(e) {
+			var step = $wizard.wizard("selectedItem");
+			// reset states
+			$btnNext.removeAttr("disabled");
+			$btnPrev.removeAttr("disabled");
+			$btnNext.show();
+			$btnFinish.hide();
 
-                if (step.step === 1) {
-                    $btnPrev.attr("disabled", "disabled");
-                } else if (step.step === 4) {
-                    $btnNext.hide();
-                    $btnFinish.show();
-                }
-            });
+			if (step.step === 1) {
+				$btnPrev.attr("disabled", "disabled");
+			} else if (step.step === 4) {
+				$btnNext.hide();
+				$btnFinish.show();
+			}
+		});
 
-            $btnPrev.on('click', function() {
-                $wizard.wizard('previous');
-            });
-            $btnNext.on('click', function() {
-                $wizard.wizard('next');
-            });
-        });
-    </script>
+		$btnPrev.on('click', function() {
+			$wizard.wizard('previous');
+		});
+		$btnNext.on('click', function() {
+			$wizard.wizard('next');
+		});
+	});
+</script>
 {% endblock %}

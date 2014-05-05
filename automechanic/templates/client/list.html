@@ -37,11 +37,13 @@
 	</script>
 {% endblock %}
 
+{% block navigate %}
+	<li><a href="#">Cliente</a> <span class="divider">/</span></li>
+	<li class="active">Listagem</li>
+{% endblock %}
+
 {% block content %}
 <div class="row-fluid">
-		<div class="page-header">
-			<h3>Cliente - Listagem</h3>
-		</div>
 	    <div class="row-fluid">
 		    <div class="buttons btn-group pull-right">
 				<button id="btn_new" class="btn btn-primary"><i class="icon-plus icon-white"></i></button>

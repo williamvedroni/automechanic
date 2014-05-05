@@ -19,3 +19,6 @@ class Part(models.Model):
 
     class Meta:
         db_table = 'part'
+
+    def __unicode__(self):
+        return self.description

@@ -1,0 +1,91 @@
+{% extends "layout/template.html" %}
+
+{% load utilities %}
+
+{% block head %}
+	<script>
+		$(document).ready(function(){
+			$(".nav > li").removeClass("active");
+			$("#session-account-receive").addClass("active");
+			$('#date-payment').datepicker();
+			$('#btn_cancel').on('click',function(){
+				location.href = "{% url 'account.receive' %}";
+			});
+		});
+	</script>
+{% endblock %}
+
+{% block navigate %}
+	<li><a href="#">Contas</a> <span class="divider">/</span></li>
+	<li class="active">Pagamento</li>
+{% endblock %}
+
+{% block content %}
+	
+    <div class="row-fluid">
+		<form method="post" action="{{ action }}">
+			{% csrf_token %}
+			<div class="span9">
+				<div class="control-group">
+					<label class="control-label">Cliente:</label>		
+					<div class="input-prepend">
+							<span class="add-on"><i class="fa fa-user"></i></span>
+							<input type="text" value="{{ service_order.vehicle.client }}" readonly="readonly"> 
+							<span class="help-inline"> 
+
+							</span>
+					</div>
+				</div>
+			</div>
+			<div class="span9">
+				<div class="control-group">
+					<label class="control-label">Total:</label>		
+					<div class="input-prepend">
+							<span class="add-on">R$</span>
+							<input type="text" value="{{ total }}" readonly="readonly"> 
+							<span class="help-inline"> 
+								
+							</span>
+					</div>
+				</div>
+			</div>
+			<div class="span9">
+				<div class="control-group{% if form.payment.errors %} error{% endif %}" id="{{ form.payment.auto_id }}">
+					<label class="control-label">{{ form.payment.label_tag }}</label>		
+					<div class="input-prepend">
+							<span class="add-on">R$</span> {{ form.payment }} 
+								<span class="help-inline"> 
+								{% if form.payment.errors %}
+									{% for error in form.payment.errors %} 
+										{{ error|escape }}</br>
+									{% endfor %} 
+								{% endif %}
+							</span>
+					</div>
+				</div>
+			</div>
+			<div class="span9">
+				<div class="control-group{% if form.payment_date.errors %} error{% endif %}" id="{{ form.payment_date.auto_id }}">
+					<label class="control-label">{{ form.payment_date.label_tag }}</label>		
+					<div class="input-append date" id="date-payment" data-date="" data-date-format="dd/mm/yyyy">
+	                    {{ form.payment_date }}
+	                    <span class="add-on"><i class="icon-calendar pointer"></i></span>
+	                </div>
+					<span class="help-inline">
+					{% if form.payment_date.errors %} 
+						{% for error in form.payment_date.errors %}
+							{{ error|escape }}</br>
+						{% endfor %}
+					{% endif %}
+					</span>
+				</div>
+			</div>
+			<div class="span9 top1">
+			    <div class="btn-group pull-left form-group">
+					<button id="btn_new" type="submit" class="btn btn-primary">Gravar</button>
+					<button id="btn_cancel" type="button" class="btn">Cancelar</button>
+				</div>
+			</div>
+		</form>
+    </div>
+{% endblock %}

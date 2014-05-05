@@ -74,5 +74,9 @@ urlpatterns += patterns('automechanic.employee.views',
 )
 
 urlpatterns += patterns('automechanic.service_order.views',
-    url(r'^service.order/new/', 'new', name='service.order.new'),
+    url(r'^service-order/new/', 'new', name='service.order.new'),
+    url(r'^service-order/add/', 'add', name='service.order.add'),
+    url(r'^service-order/load/vehicle/', 'load_vehicle', name='load.vehicle'),
+    url(r'^service-order/account/receive/', 'account_receive', name='account.receive'),
+    url(r'^service-order/payment/(?P<service_order_id>\d+)/', 'payment', name='payment'),
 )

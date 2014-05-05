@@ -36,3 +36,6 @@ EMPLOYEE_FORM = 'employee/form.html'
 Order Service
 '''
 ORDER_SERVICE_FORM = 'service_order/form-wizard.html'
+ORDER_SERVICE_PAYMENT_FORM = 'service_order/payment.html'
+ORDER_SERVICE_ACCOUNT_RECEIVE = 'service_order/account_receive.html'
+ORDER_SERVICE_VEHICLE_OPTION = 'service_order/vehicle-option.html'
