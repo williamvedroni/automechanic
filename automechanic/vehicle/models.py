@@ -36,3 +36,6 @@ class Vehicle(models.Model):
 
     class Meta:
         db_table = 'vehicle'
+
+    def __unicode__(self):
+        return self.vehicle_model + ' - ' +self.license_plate

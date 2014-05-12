@@ -9,9 +9,11 @@ from automechanic.part.models import Part
 from django.db.models import Sum
 from django.core.urlresolvers import reverse
 from automechanic.employee.models import Employee
-from automechanic.messages import success_messages
 from django.contrib import messages
 from django.forms.models import model_to_dict
+from django.http import HttpResponse
+from reports import ReportServiceOrder
+from geraldo.generators import PDFGenerator
 
 
 def new(request):
@@ -123,3 +125,14 @@ def payment(request, service_order_id):
                       'action': reverse('payment', args=[service_order_id])
                   }
     )
+
+
+def service_order_report(request):
+
+    resp = HttpResponse(mimetype='application/pdf')
+
+    service_orders = ServiceOrder.objects.order_by('vehicle')
+    report = ReportServiceOrder(queryset=service_orders)
+    report.generate_by(PDFGenerator, filename=resp)
+
+    return resp
