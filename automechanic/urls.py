@@ -19,6 +19,7 @@ urlpatterns = patterns('',
 urlpatterns += patterns('automechanic.authentication.views',
     url('^[/]?$', 'login', name='login'),
     url(r'^login/$', 'login', name='login'),
+    url(r'^logout/$', 'logout', name='logout'),
 )
 
 '''

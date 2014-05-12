@@ -55,3 +55,14 @@ class PaymentForm(forms.Form):
         input_formats=('%d/%m/%Y',),
     )
 
+
+class AditionalServiceForm(forms.Form):
+
+    service_rating = forms.DecimalField(
+        label=u'Pagamento:',
+        max_value=99999999,
+        max_digits=8,
+        decimal_places=2,
+        localize=True,
+        error_messages=error_messages,
+    )

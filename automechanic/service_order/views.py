@@ -1,7 +1,8 @@
 # coding:utf-8
 from automechanic import templates
 from django.shortcuts import render, redirect
-from automechanic.service_order.forms import ServiceOrderForm, PaymentForm
+from automechanic.service_order.forms import ServiceOrderForm, PaymentForm, \
+    AditionalServiceForm
 from automechanic.vehicle.models import Vehicle
 from automechanic.service_order.models import ServiceOrder, ServiceOrderEmployee, \
     ServiceOrderPart, AccountReceive
@@ -14,8 +15,10 @@ from django.forms.models import model_to_dict
 from django.http import HttpResponse
 from reports import ReportServiceOrder
 from geraldo.generators import PDFGenerator
+from django.contrib.auth.decorators import login_required
 
 
+@login_required
 def new(request):
 
     return render(
@@ -27,6 +30,7 @@ def new(request):
     )
 
 
+@login_required
 def load_vehicle(request):
 
     options_vehicle = []
@@ -38,11 +42,15 @@ def load_vehicle(request):
     return render(request, templates.ORDER_SERVICE_VEHICLE_OPTION, {'options_vehicle': options_vehicle})
 
 
+@login_required
 def add(request):
 
     employees = request.POST.getlist('employees')
     parts_selecteds = request.POST.getlist('parts-selecteds')
-    service_rating = request.POST.get('service_rating')
+    aditional_service_form = AditionalServiceForm(request.POST)
+    aditional_service_form.is_valid()
+    service_rating = aditional_service_form.cleaned_data['service_rating']
+
     vehicle_id = request.POST.get('vehicles')
 
     service_order = ServiceOrder()
@@ -57,7 +65,6 @@ def add(request):
         service_order_employee.save()
 
     for part_id in parts_selecteds:
-
         part = Part.objects.get(id=part_id)
         part.quantity = part.quantity - 1
         part.save()
@@ -72,6 +79,7 @@ def add(request):
     return redirect('account.receive')
 
 
+@login_required
 def account_receive(request):
 
     services_order = []
@@ -96,6 +104,7 @@ def account_receive(request):
     )
 
 
+@login_required
 def payment(request, service_order_id):
 
     service_order = ServiceOrder.objects.get(id=service_order_id)
@@ -127,6 +136,7 @@ def payment(request, service_order_id):
     )
 
 
+@login_required
 def service_order_report(request):
 
     resp = HttpResponse(mimetype='application/pdf')

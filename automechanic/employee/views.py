@@ -8,8 +8,10 @@ from django.views.decorators.http import require_http_methods
 from automechanic import templates
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.decorators import login_required
 
 
+@login_required
 @require_http_methods(["GET"])
 def list_all(request):
 
@@ -22,6 +24,7 @@ def list_all(request):
     return render(request, templates.EMPLOYEE_LIST, context)
 
 
+@login_required
 @require_http_methods(["GET"])
 def add(request):
 
@@ -33,6 +36,7 @@ def add(request):
     return render(request, templates.EMPLOYEE_FORM, context)
 
 
+@login_required
 @require_http_methods(["POST"])
 def save(request):
 
@@ -52,6 +56,7 @@ def save(request):
     return render(request, templates.EMPLOYEE_FORM, context)
 
 
+@login_required
 @require_http_methods(["GET"])
 def edit(request, employee_id):
 
@@ -69,6 +74,7 @@ def edit(request, employee_id):
         return redirect('employee.list')
 
 
+@login_required
 @require_http_methods(["POST"])
 def update(request, employee_id):
 
@@ -94,6 +100,7 @@ def update(request, employee_id):
         return redirect('employee.list')
 
 
+@login_required
 @require_http_methods(["POST"])
 def delete(request):
 

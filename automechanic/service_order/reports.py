@@ -5,6 +5,7 @@ from geraldo.base import ReportBand
 from geraldo.widgets import ObjectValue, SystemField, Label
 from geraldo.utils import BAND_WIDTH
 from reportlab.lib.enums import TA_RIGHT, TA_CENTER
+from django.utils.formats import number_format
 
 
 class ReportServiceOrder(Report):
@@ -20,7 +21,8 @@ class ReportServiceOrder(Report):
         elements = (
                     ObjectValue(attribute_name='id', left=0.5 * cm),
                     ObjectValue(attribute_name='vehicle', left=3.5 * cm),
-                    ObjectValue(attribute_name='service_rating', left=8.5 * cm),
+                    ObjectValue(attribute_name='service_rating', left=8.5 * cm,
+                                get_value=lambda instance: number_format(instance.service_rating)),
                     ObjectValue(attribute_name='created', left=11.5 * cm,
                     get_value=lambda instance: instance.created.strftime('%m/%d/%Y')),
         )

@@ -4,9 +4,12 @@
 {% block head %}
 <script>
 	$(document).ready(function() {
+	$(".nav > li").removeClass("active");
+	$("#session-service-order").addClass("active");
 
 	$("select#id_clients").on("change", function() {
-
+		
+		
 		$("select#id_vehicles").empty();
 		var client_id = $(this).val();
 		$.ajax({

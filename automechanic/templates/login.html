@@ -9,7 +9,7 @@
     <meta name="author" content="">
     <link rel="shortcut icon" href="{% static 'site/img/favicon.png' %}" type="image/ico" />
 
-    <title>Signin AutoMechanic</title>
+    <title>Login AutoMechanic</title>
 
     <!-- Bootstrap core CSS -->
     <link href="{% static 'site/bootstrap_/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
@@ -19,17 +19,26 @@
   </head>
 
   <body>
-
+	
     <div class="container" class="span6">
-
-      <form class="form-signin" role="form" action="{% url 'client.list' %}">
-        <h2 class="form-signin-heading">Please sign in</h2>
-        <input class="form-control" type="email" placeholder="Email address" autofocus>
-        <input class="form-control" type="password" placeholder="Password">
-        <label class="checkbox">
-          <input type="checkbox" value="remember-me"> Remember me
-        </label>
-        <button class="btn btn-primary pull-right" type="submit">Sign in</button>
+		<div id="div-messages" class='row-fluid'>
+			<!-- messages -->
+				<div class="messages">
+					{% for message in messages %}
+					<div class="alert alert-{{message.tags}} text-center">
+					  <button type="button" class="close" data-dismiss="alert">&times;</button>
+					  {{ message }}
+					</div>
+					{% endfor %}
+				</div>				
+			<!-- /messages -->
+		</div>
+      <form class="form-signin" role="form" action="{% url 'login' %}" method="post">
+      	{% csrf_token %}
+        <h2 class="form-signin-heading">Login</h2>
+        <input name="username" class="form-control" type="text" placeholder="Usuário" autofocus required="required">
+        <input name="password" class="form-control" type="password" placeholder="Senha" required="required">
+        <button class="btn btn-primary pull-right" type="submit">Entrar</button>
       </form>
 
     </div> <!-- /container -->
