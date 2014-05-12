@@ -7,7 +7,7 @@ from django.contrib.auth.models import AnonymousUser
 
 def login(request):
 
-    if  not isinstance(request.user, AnonymousUser):
+    if not isinstance(request.user, AnonymousUser):
         return render(request, 'home.html')
 
     if request.POST:
@@ -19,6 +19,9 @@ def login(request):
         if user is not None:
             if user.is_active:
                 Login(request, user)
+                return render(request, 'home.html')
+            else:
+                messages.add_message(request, messages.ERROR, u"Usuário inativo.")
                 return render(request, 'home.html')
 
         messages.add_message(request, messages.ERROR, u"Usuário e/ou senha incorreto(s).")

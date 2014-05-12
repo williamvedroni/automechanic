@@ -8,8 +8,10 @@ from django.core.urlresolvers import reverse
 from django.core.exceptions import ObjectDoesNotExist
 from automechanic.vehicle.models import Vehicle
 from automechanic.vehicle.forms import VehicleForm
+from django.contrib.auth.decorators import login_required
 
 
+@login_required
 @require_http_methods(["GET"])
 def list_all(request, client_id):
 
@@ -23,6 +25,7 @@ def list_all(request, client_id):
     return render(request, templates.VEHICLE_LIST, context)
 
 
+@login_required
 @require_http_methods(["GET"])
 def add(request, client_id):
 
